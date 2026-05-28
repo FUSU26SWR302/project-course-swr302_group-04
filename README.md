@@ -20,7 +20,7 @@ Trong phương pháp quản lý truyền thống, thông tin sinh viên thườn
 
 | Thành phần | Công nghệ đề xuất |
 | :--- | :--- |
-| **Frontend** | HTML5, CSS3, JavaScript (ES6), Bootstrap 5 |
+| **Frontend** | HTML5 + CSS3 + JavaScript|
 | **Backend** | Java (Spring Boot) |
 | **Database** | MySQL |
 | **Tools & Testing** | Git & GitHub, Postman, Figma |
