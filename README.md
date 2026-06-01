@@ -22,7 +22,7 @@ Trong phương pháp quản lý truyền thống, thông tin sinh viên thườn
 | :--- | :--- |
 | **Frontend** | HTML5 + CSS3 + JavaScript|
 | **Backend** | Java (Spring Boot) |
-| **Database** | MySQL |
+| **Database** | SQL Sever |
 | **Tools & Testing** | Git & GitHub, Postman, Figma |
 
 ---
