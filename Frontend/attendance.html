@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ACADEX Attendance Management</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body data-page="attendance">
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <div class="logo-circle">A</div>
+        <div>
+          <h2>ACADEX</h2>
+          <span>Student System</span>
+        </div>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="dashboard.html" class="sidebar-link"><span class="nav-icon">🏠</span>Dashboard</a>
+        <a href="students.html" class="sidebar-link"><span class="nav-icon">👩‍🎓</span>Student Management</a>
+        <a href="classes.html" class="sidebar-link"><span class="nav-icon">🏫</span>Class Management</a>
+        <a href="subjects.html" class="sidebar-link"><span class="nav-icon">📚</span>Subject Management</a>
+        <a href="scores.html" class="sidebar-link"><span class="nav-icon">📝</span>Score Management</a>
+        <a href="attendance.html" class="sidebar-link active"><span class="nav-icon">📅</span>Attendance Management</a>
+        <a href="notifications.html" class="sidebar-link"><span class="nav-icon">🔔</span>Notification Management</a>
+        <a href="reports.html" class="sidebar-link"><span class="nav-icon">📄</span>Report Management</a>
+      </nav>
+      <div class="sidebar-footer">
+        <a href="login.html" class="btn btn-secondary btn-full">Logout</a>
+      </div>
+    </aside>
+    <main class="main-content">
+      <header class="topbar">
+        <div>
+          <h1>Attendance Management</h1>
+          <p>Record daily student attendance, track late policies, and view summaries.</p>
+        </div>
+        <button id="saveAttendanceBtn" class="btn btn-primary">Save Attendance</button>
+      </header>
+
+      <section class="card panel-card">
+        <div class="panel-actions">
+          <div class="filter-group">
+            <label for="attendanceDate">Session Date</label>
+            <input type="date" id="attendanceDate" required />
+          </div>
+          <div class="filter-group">
+            <label for="attendanceClassFilter">Target Class</label>
+            <select id="attendanceClassFilter"></select>
+          </div>
+          <div class="search-group">
+            <input id="attendanceSearch" type="text" placeholder="Search student name..." style="margin-left: auto;" />
+          </div>
+        </div>
+        
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Student Name</th>
+                <th>Academic Class</th>
+                <th>Attendance Record Status</th>
+              </tr>
+            </thead>
+            <tbody id="attendanceTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="grid-two gap-large">
+        <div class="card card-panel">
+          <div class="panel-header">
+            <h2>Daily Class Summary</h2>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 10px;">
+            <div style="background: var(--success-light); color: var(--success); padding: 18px; border-radius: var(--radius-md); text-align: center;">
+              <small style="font-weight:700;">Present</small>
+              <div id="presentCount" style="font-size: 1.8rem; font-weight: 800; margin-top: 4px;">0</div>
+            </div>
+            <div style="background: var(--danger-light); color: var(--danger); padding: 18px; border-radius: var(--radius-md); text-align: center;">
+              <small style="font-weight:700;">Absent</small>
+              <div id="absentCount" style="font-size: 1.8rem; font-weight: 800; margin-top: 4px;">0</div>
+            </div>
+            <div style="background: var(--warning-light); color: var(--warning); padding: 18px; border-radius: var(--radius-md); text-align: center;">
+              <small style="font-weight:700;">Late</small>
+              <div id="lateCount" style="font-size: 1.8rem; font-weight: 800; margin-top: 4px;">0</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card card-panel">
+          <div class="panel-header">
+            <h2>Attendance Reporting</h2>
+          </div>
+          <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 20px;">Use the reports module to compile quarterly charts and check students' overall attendance rates.</p>
+          <button id="attendanceReportBtn" class="btn btn-secondary">Open Attendance Reports</button>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script src="js/script.js"></script>
+</body>
+</html>

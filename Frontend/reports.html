@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ACADEX Report Management</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body data-page="reports">
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <div class="logo-circle">A</div>
+        <div>
+          <h2>ACADEX</h2>
+          <span>Student System</span>
+        </div>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="dashboard.html" class="sidebar-link"><span class="nav-icon">🏠</span>Dashboard</a>
+        <a href="students.html" class="sidebar-link"><span class="nav-icon">👩‍🎓</span>Student Management</a>
+        <a href="classes.html" class="sidebar-link"><span class="nav-icon">🏫</span>Class Management</a>
+        <a href="subjects.html" class="sidebar-link"><span class="nav-icon">📚</span>Subject Management</a>
+        <a href="scores.html" class="sidebar-link"><span class="nav-icon">📝</span>Score Management</a>
+        <a href="attendance.html" class="sidebar-link"><span class="nav-icon">📅</span>Attendance Management</a>
+        <a href="notifications.html" class="sidebar-link"><span class="nav-icon">🔔</span>Notification Management</a>
+        <a href="reports.html" class="sidebar-link active"><span class="nav-icon">📄</span>Report Management</a>
+      </nav>
+      <div class="sidebar-footer">
+        <a href="login.html" class="btn btn-secondary btn-full">Logout</a>
+      </div>
+    </aside>
+    <main class="main-content">
+      <header class="topbar no-print">
+        <div>
+          <h1>Reports & Transcripts</h1>
+          <p>Generate certified student reports, attendance records, or official transcripts.</p>
+        </div>
+      </header>
+      
+      <section class="grid-two gap-large no-print">
+        <div class="card card-panel">
+          <div class="panel-header">
+            <h2>Select Report Category</h2>
+          </div>
+          <div class="report-selection">
+            <label>
+              <input type="radio" name="reportType" value="academic" checked style="cursor:pointer;" /> 
+              <span style="margin-left: 8px;">Academic Overview Report</span>
+            </label>
+            <label>
+              <input type="radio" name="reportType" value="attendance" style="cursor:pointer;" /> 
+              <span style="margin-left: 8px;">Attendance Summaries</span>
+            </label>
+            <label>
+              <input type="radio" name="reportType" value="transcript" style="cursor:pointer;" /> 
+              <span style="margin-left: 8px;">Official Student Transcript</span>
+            </label>
+          </div>
+        </div>
+        
+        <div class="card card-panel">
+          <div class="panel-header">
+            <h2>Export Actions</h2>
+          </div>
+          <div class="report-actions">
+            <button id="exportPdfBtn" class="btn btn-primary">📄 Export PDF Document</button>
+            <button id="exportExcelBtn" class="btn btn-secondary">📊 Export Excel Sheet</button>
+            <button id="downloadTranscriptBtn" class="btn btn-primary">🎓 Print / Save Transcript</button>
+          </div>
+        </div>
+      </section>
+      
+      <section class="card panel-card report-preview-container">
+        <div class="panel-header no-print">
+          <h2>Report Preview</h2>
+          <span class="badge badge-primary">Preview Mode</span>
+        </div>
+        <div class="report-preview" id="reportPreview">
+          <!-- Filled dynamically by JS -->
+        </div>
+      </section>
+    </main>
+  </div>
+  <script src="js/script.js"></script>
+</body>
+</html>

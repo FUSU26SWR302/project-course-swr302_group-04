@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ACADEX Student Management</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body data-page="students">
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <div class="logo-circle">A</div>
+        <div>
+          <h2>ACADEX</h2>
+          <span>Student System</span>
+        </div>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="dashboard.html" class="sidebar-link"><span class="nav-icon">🏠</span>Dashboard</a>
+        <a href="students.html" class="sidebar-link"><span class="nav-icon">👩‍🎓</span>Student Management</a>
+        <a href="classes.html" class="sidebar-link"><span class="nav-icon">🏫</span>Class Management</a>
+        <a href="subjects.html" class="sidebar-link"><span class="nav-icon">📚</span>Subject Management</a>
+        <a href="scores.html" class="sidebar-link"><span class="nav-icon">📝</span>Score Management</a>
+        <a href="attendance.html" class="sidebar-link"><span class="nav-icon">📅</span>Attendance Management</a>
+        <a href="notifications.html" class="sidebar-link"><span class="nav-icon">🔔</span>Notification Management</a>
+        <a href="reports.html" class="sidebar-link"><span class="nav-icon">📄</span>Report Management</a>
+      </nav>
+      <div class="sidebar-footer">
+        <a href="login.html" class="btn btn-secondary btn-full">Logout</a>
+      </div>
+    </aside>
+    <main class="main-content">
+      <header class="topbar">
+        <div>
+          <h1>Student Management</h1>
+          <p>Track student profiles, enrollment data, and academic summary.</p>
+        </div>
+        <div class="action-buttons-top" style="display: flex; gap: 12px;">
+          <button id="exportStudentsBtn" class="btn btn-secondary">📥 Export CSV</button>
+          <button id="addStudentBtn" class="btn btn-primary">Add Student</button>
+        </div>
+      </header>
+      
+      <section class="card panel-card">
+        <div class="panel-actions">
+          <div class="search-group">
+            <input id="studentSearch" type="text" placeholder="Search students by name, ID or email..." />
+          </div>
+          <div class="filter-group">
+            <label for="studentClassFilter">Filter by Class</label>
+            <select id="studentClassFilter">
+              <option value="all">All Classes</option>
+            </select>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th class="sortable" data-sort-key="id">ID</th>
+                <th class="sortable" data-sort-key="name">Full Name</th>
+                <th>Gender</th>
+                <th class="sortable" data-sort-key="dob">DOB</th>
+                <th class="sortable" data-sort-key="class">Class</th>
+                <th>Email Address</th>
+                <th class="sortable" data-sort-key="gpa">GPA</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="studentTableBody"></tbody>
+          </table>
+        </div>
+        <div class="pagination" id="studentPagination"></div>
+      </section>
+
+      <section id="studentFormPanel" class="card hidden form-panel">
+        <h2 id="studentFormTitle">Add New Student Record</h2>
+        <form id="studentForm">
+          <div class="form-grid">
+            <label>Full Name
+              <input type="text" id="studentName" required />
+            </label>
+            <label>Gender
+              <select id="studentGender">
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+              </select>
+            </label>
+            <label>Date of Birth
+              <input type="date" id="studentDob" required />
+            </label>
+            <label>Class
+              <select id="studentClass"></select>
+            </label>
+            <label>Email Address
+              <input type="email" id="studentEmail" required />
+            </label>
+            <label>GPA (0.00 - 4.00)
+              <input type="number" step="0.01" min="0" max="4" id="studentGpa" required />
+            </label>
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Save Student</button>
+            <button type="button" id="studentFormCancel" class="btn btn-secondary">Cancel</button>
+          </div>
+        </form>
+      </section>
+    </main>
+  </div>
+  <script src="js/script.js"></script>
+</body>
+</html>

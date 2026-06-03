@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ACADEX Student Management System - Login</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body data-page="login">
+  <main class="auth-page">
+    <div class="auth-card">
+      <div class="auth-brand">
+        <div class="logo-circle">A</div>
+        <div>
+          <h1>ACADEX</h1>
+          <p>Student Management System</p>
+        </div>
+      </div>
+      <p class="auth-intro">Secure access to student records, attendance, exams, and reports.</p>
+      <form id="login-form" class="auth-form">
+        <div class="field-group">
+          <label for="username">Username or Email</label>
+          <input id="username" name="username" type="text" placeholder="e.g. admin, student" required />
+        </div>
+        <div class="field-group">
+          <label for="password">Password</label>
+          <input id="password" name="password" type="password" placeholder="••••••••" required />
+        </div>
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <input type="checkbox" id="remember-me" name="remember-me" style="width: auto; cursor: pointer;" />
+          <label for="remember-me" style="font-size: 0.85rem; font-weight: 500; cursor: pointer; color: var(--text-muted);">Remember this session</label>
+        </div>
+        <div id="error-message" class="error-message"></div>
+        <button type="submit" class="btn btn-primary btn-full">Sign In</button>
+        <div class="auth-footer">
+          <a href="register.html">Create Account</a>
+          <a href="forgot-password.html">Forgot Password?</a>
+        </div>
+      </form>
+    </div>
+  </main>
+  <script src="js/script.js"></script>
+</body>
+</html>

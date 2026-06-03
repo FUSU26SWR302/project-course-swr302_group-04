@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ACADEX Score Management</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body data-page="scores">
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <div class="logo-circle">A</div>
+        <div>
+          <h2>ACADEX</h2>
+          <span>Student System</span>
+        </div>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="dashboard.html" class="sidebar-link"><span class="nav-icon">🏠</span>Dashboard</a>
+        <a href="students.html" class="sidebar-link"><span class="nav-icon">👩‍🎓</span>Student Management</a>
+        <a href="classes.html" class="sidebar-link"><span class="nav-icon">🏫</span>Class Management</a>
+        <a href="subjects.html" class="sidebar-link"><span class="nav-icon">📚</span>Subject Management</a>
+        <a href="scores.html" class="sidebar-link"><span class="nav-icon">📝</span>Score Management</a>
+        <a href="attendance.html" class="sidebar-link"><span class="nav-icon">📅</span>Attendance Management</a>
+        <a href="notifications.html" class="sidebar-link"><span class="nav-icon">🔔</span>Notification Management</a>
+        <a href="reports.html" class="sidebar-link"><span class="nav-icon">📄</span>Report Management</a>
+      </nav>
+      <div class="sidebar-footer">
+        <a href="login.html" class="btn btn-secondary btn-full">Logout</a>
+      </div>
+    </aside>
+    <main class="main-content">
+      <header class="topbar">
+        <div>
+          <h1>Score Management</h1>
+          <p>Review student academic performance scores and track GPA averages.</p>
+        </div>
+        <button id="addScoreBtn" class="btn btn-primary">Add Score</button>
+      </header>
+
+      <section class="grid-four">
+        <div class="card stats-card">
+          <div>
+            <div class="card-title">Average Score GPA</div>
+            <div class="stat-val-container">
+              <div class="stat-value" id="scoreGpaValue">0.0</div>
+            </div>
+          </div>
+        </div>
+        <div class="card stats-card accent">
+          <div>
+            <div class="card-title">Status Report</div>
+            <div class="stat-val-container">
+              <div class="stat-value">94%</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="card panel-card">
+        <div class="panel-actions">
+          <div class="search-group">
+            <input id="scoreSearch" type="text" placeholder="Search grades by student name or subject..." />
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Student Name</th>
+                <th>Subject</th>
+                <th>Midterm Score</th>
+                <th>Final Score</th>
+                <th>Calculated GPA</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="scoreTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="scoreFormPanel" class="card hidden form-panel">
+        <h2 id="scoreFormTitle">Record Student Grade</h2>
+        <form id="scoreForm">
+          <div class="form-grid">
+            <label>Student Name
+              <select id="scoreStudent"></select>
+            </label>
+            <label>Academic Subject
+              <select id="scoreSubject"></select>
+            </label>
+            <label>Midterm Grade (0-100)
+              <input type="number" min="0" max="100" id="midtermScore" required placeholder="80" />
+            </label>
+            <label>Final Exam Grade (0-100)
+              <input type="number" min="0" max="100" id="finalScore" required placeholder="85" />
+            </label>
+            <label>Calculated GPA Equivalency
+              <input type="number" step="0.01" min="0" max="4" id="scoreGpa" readonly placeholder="Calculated overall" />
+            </label>
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Save Score</button>
+            <button type="button" id="scoreFormCancel" class="btn btn-secondary">Cancel</button>
+          </div>
+        </form>
+      </section>
+    </main>
+  </div>
+  <script src="js/script.js"></script>
+</body>
+</html>

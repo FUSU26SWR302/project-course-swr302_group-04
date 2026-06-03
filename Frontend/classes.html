@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ACADEX Class Management</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body data-page="classes">
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <div class="logo-circle">A</div>
+        <div>
+          <h2>ACADEX</h2>
+          <span>Student System</span>
+        </div>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="dashboard.html" class="sidebar-link"><span class="nav-icon">🏠</span>Dashboard</a>
+        <a href="students.html" class="sidebar-link"><span class="nav-icon">👩‍🎓</span>Student Management</a>
+        <a href="classes.html" class="sidebar-link"><span class="nav-icon">🏫</span>Class Management</a>
+        <a href="subjects.html" class="sidebar-link"><span class="nav-icon">📚</span>Subject Management</a>
+        <a href="scores.html" class="sidebar-link"><span class="nav-icon">📝</span>Score Management</a>
+        <a href="attendance.html" class="sidebar-link"><span class="nav-icon">📅</span>Attendance Management</a>
+        <a href="notifications.html" class="sidebar-link"><span class="nav-icon">🔔</span>Notification Management</a>
+        <a href="reports.html" class="sidebar-link"><span class="nav-icon">📄</span>Report Management</a>
+      </nav>
+      <div class="sidebar-footer">
+        <a href="login.html" class="btn btn-secondary btn-full">Logout</a>
+      </div>
+    </aside>
+    <main class="main-content">
+      <header class="topbar">
+        <div>
+          <h1>Class Management</h1>
+          <p>Manage academic classes, homeroom teachers, and student assignments.</p>
+        </div>
+        <button id="addClassBtn" class="btn btn-primary">Add Class</button>
+      </header>
+      
+      <section class="card panel-card">
+        <div class="panel-actions">
+          <div class="search-group">
+            <input id="classSearch" type="text" placeholder="Search academic classes..." />
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Class ID</th>
+                <th>Class Name</th>
+                <th>Homeroom Teacher</th>
+                <th>Students Enrolled</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="classTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="grid-two gap-large">
+        <div class="card card-panel">
+          <div class="panel-header">
+            <h2>Class Student Enrollment</h2>
+          </div>
+          <div class="assign-panel">
+            <label>Select Academic Class
+              <select id="assignStudentClass"></select>
+            </label>
+            <div class="assign-list" id="assignStudentList"></div>
+          </div>
+        </div>
+        
+        <div class="card card-panel">
+          <div class="panel-header">
+            <h2>Assign Homeroom Teacher</h2>
+          </div>
+          <div class="assign-panel">
+            <label>Select Class
+              <select id="assignTeacherClass"></select>
+            </label>
+            <label>Select Homeroom Teacher
+              <select id="assignTeacherSelect">
+                <option value="Mr. Hudson">Mr. Hudson</option>
+                <option value="Ms. Carter">Ms. Carter</option>
+                <option value="Mrs. Lewis">Mrs. Lewis</option>
+                <option value="Mr. Robert Vance">Mr. Robert Vance</option>
+              </select>
+            </label>
+            <button id="saveTeacherBtn" class="btn btn-primary">Save Assignment</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="classFormPanel" class="card hidden form-panel">
+        <h2 id="classFormTitle">Add New Class</h2>
+        <form id="classForm">
+          <div class="form-grid">
+            <label>Class Name
+              <input type="text" id="className" required placeholder="e.g. 10A" />
+            </label>
+            <label>Homeroom Teacher
+              <select id="classTeacher">
+                <option value="Mr. Hudson">Mr. Hudson</option>
+                <option value="Ms. Carter">Ms. Carter</option>
+                <option value="Mrs. Lewis">Mrs. Lewis</option>
+                <option value="Mr. Robert Vance">Mr. Robert Vance</option>
+              </select>
+            </label>
+            <label>Target Student Limit
+              <input type="number" min="1" id="classCount" required placeholder="30" />
+            </label>
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Save Class</button>
+            <button type="button" id="classFormCancel" class="btn btn-secondary">Cancel</button>
+          </div>
+        </form>
+      </section>
+    </main>
+  </div>
+  <script src="js/script.js"></script>
+</body>
+</html>

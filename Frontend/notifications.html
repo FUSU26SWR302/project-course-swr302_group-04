@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ACADEX Notification Management</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body data-page="notifications">
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <div class="logo-circle">A</div>
+        <div>
+          <h2>ACADEX</h2>
+          <span>Student System</span>
+        </div>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="dashboard.html" class="sidebar-link"><span class="nav-icon">🏠</span>Dashboard</a>
+        <a href="students.html" class="sidebar-link"><span class="nav-icon">👩‍🎓</span>Student Management</a>
+        <a href="classes.html" class="sidebar-link"><span class="nav-icon">🏫</span>Class Management</a>
+        <a href="subjects.html" class="sidebar-link"><span class="nav-icon">📚</span>Subject Management</a>
+        <a href="scores.html" class="sidebar-link"><span class="nav-icon">📝</span>Score Management</a>
+        <a href="attendance.html" class="sidebar-link"><span class="nav-icon">📅</span>Attendance Management</a>
+        <a href="notifications.html" class="sidebar-link"><span class="nav-icon">🔔</span>Notification Management</a>
+        <a href="reports.html" class="sidebar-link"><span class="nav-icon">📄</span>Report Management</a>
+      </nav>
+      <div class="sidebar-footer">
+        <a href="login.html" class="btn btn-secondary btn-full">Logout</a>
+      </div>
+    </aside>
+    <main class="main-content">
+      <header class="topbar">
+        <div>
+          <h1>Notification Management</h1>
+          <p>Compose announcement alerts and review broadcasts for students or faculty.</p>
+        </div>
+      </header>
+      
+      <section class="grid-two gap-large">
+        <div class="card card-panel">
+          <div class="panel-header">
+            <h2>Create New Notice</h2>
+          </div>
+          <form id="notificationForm">
+            <div class="form-grid" style="grid-template-columns: 1fr;">
+              <label>Notice Title
+                <input type="text" id="notificationTitle" required placeholder="e.g. Midterm Exam Schedules" />
+              </label>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                <label>Recipient Target
+                  <select id="notificationRecipient" required>
+                    <option value="All">All Portal Users</option>
+                    <option value="Students">Students Only</option>
+                    <option value="Teachers">Teachers Only</option>
+                    <option value="Administration">Staff Administration</option>
+                  </select>
+                </label>
+                <label>Publication Date
+                  <input type="date" id="notificationDate" required />
+                </label>
+              </div>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                <label>Priority Level
+                  <select id="notificationPriority" required>
+                    <option value="Low">Low Priority</option>
+                    <option value="Medium" selected>Medium Priority</option>
+                    <option value="High">High Priority</option>
+                  </select>
+                </label>
+                <label>Announcement Status
+                  <select id="notificationStatus" required>
+                    <option value="Published">Published</option>
+                    <option value="Draft">Save as Draft</option>
+                  </select>
+                </label>
+              </div>
+              <label>Announcement Message
+                <textarea id="notificationMessage" rows="4" required placeholder="Type the alert description details..."></textarea>
+              </label>
+            </div>
+            <div class="form-actions" style="margin-top: 10px;">
+              <button type="submit" class="btn btn-primary">Broadcast Notification</button>
+            </div>
+          </form>
+        </div>
+        
+        <div class="card card-panel" style="display: flex; flex-direction: column;">
+          <div class="panel-header">
+            <h2>Notification Logs</h2>
+          </div>
+          <div class="notification-list" id="notificationHistory" style="flex: 1; overflow-y: auto; max-height: 520px;">
+            <!-- Rendered by JS -->
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script src="js/script.js"></script>
+</body>
+</html>

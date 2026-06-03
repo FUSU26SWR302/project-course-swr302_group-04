@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ACADEX Redirecting...</title>
+  <script>
+    // Simple router redirect based on auth status
+    const sessionUser = sessionStorage.getItem('acadex_currentUser') || localStorage.getItem('acadex_currentUser');
+    if (sessionUser) {
+      window.location.replace('dashboard.html');
+    } else {
+      window.location.replace('login.html');
+    }
+  </script>
+</head>
+<body>
+  <p>Loading ACADEX Student System...</p>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ACADEX - Profile Settings</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body data-page="profile">
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <div class="logo-circle">A</div>
+        <div>
+          <h2>ACADEX</h2>
+          <span>Student System</span>
+        </div>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="dashboard.html" class="sidebar-link"><span class="nav-icon">🏠</span>Dashboard</a>
+        <a href="students.html" class="sidebar-link"><span class="nav-icon">👩‍🎓</span>Student Management</a>
+        <a href="classes.html" class="sidebar-link"><span class="nav-icon">🏫</span>Class Management</a>
+        <a href="subjects.html" class="sidebar-link"><span class="nav-icon">📚</span>Subject Management</a>
+        <a href="scores.html" class="sidebar-link"><span class="nav-icon">📝</span>Score Management</a>
+        <a href="attendance.html" class="sidebar-link"><span class="nav-icon">📅</span>Attendance Management</a>
+        <a href="notifications.html" class="sidebar-link"><span class="nav-icon">🔔</span>Notification Management</a>
+        <a href="reports.html" class="sidebar-link"><span class="nav-icon">📄</span>Report Management</a>
+      </nav>
+      <div class="sidebar-footer">
+        <a href="login.html" class="btn btn-secondary btn-full">Logout</a>
+      </div>
+    </aside>
+    <main class="main-content">
+      <header class="topbar">
+        <div>
+          <h1>Profile Settings</h1>
+          <p>Manage your account identity details and security configurations.</p>
+        </div>
+      </header>
+
+      <div class="profile-layout">
+        <!-- Profile Left Info Card -->
+        <div class="card profile-card">
+          <div class="profile-large-avatar">U</div>
+          <h3>User Profile</h3>
+          <div style="margin-top: 10px; margin-bottom: 20px;">
+            <span id="profileDisplayRole" class="badge">ROLE</span>
+          </div>
+          <div class="profile-card-details">
+            <p><strong>System Access:</strong> <span>Active</span></p>
+            <p><strong>Database ID:</strong> <span>ACADEX-USER</span></p>
+          </div>
+        </div>
+
+        <!-- Profile Form Forms -->
+        <div class="card card-panel">
+          <div class="panel-header">
+            <h2>Account Credentials & Security</h2>
+          </div>
+          
+          <form id="profileDetailsForm" class="profile-form" style="margin-bottom: 32px;">
+            <div class="profile-form-section">
+              <h3>Basic Information</h3>
+              <div class="form-grid">
+                <label>Full Name
+                  <input type="text" id="profileName" required />
+                </label>
+                <label>Email Address
+                  <input type="email" id="profileEmail" required />
+                </label>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary" style="align-self: flex-start;">Save Information</button>
+          </form>
+
+          <form id="profilePasswordForm" class="profile-form">
+            <div class="profile-form-section">
+              <h3>Change Password</h3>
+              <div class="form-grid">
+                <label>Current Password
+                  <input type="password" id="currentPassword" required placeholder="••••••••" />
+                </label>
+                <label>New Password
+                  <input type="password" id="newPassword" required placeholder="••••••••" minlength="6" />
+                </label>
+                <label>Confirm New Password
+                  <input type="password" id="confirmNewPassword" required placeholder="••••••••" />
+                </label>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary" style="align-self: flex-start;">Update Password</button>
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+  <script src="js/script.js"></script>
+</body>
+</html>
