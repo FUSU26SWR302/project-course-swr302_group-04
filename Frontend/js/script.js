@@ -154,16 +154,24 @@ function checkAuthentication() {
     return;
   }
 
-  // Page specific role validations
-  if (page === 'users' && user.role !== 'admin') {
-    alert('Access Denied. Admin privileges required.');
-    window.location.href = 'dashboard.html';
-  }
-
-  const restrictedStudentPages = ['students', 'classes', 'subjects'];
-  if (restrictedStudentPages.includes(page) && user.role === 'student') {
-    alert('Access Denied. Students do not have access to academic management tools.');
-    window.location.href = 'dashboard.html';
+  // Page specific role validations (RBAC)
+  const role = user.role;
+  
+  if (role === 'admin') {
+    // Admin has access to all pages (except student-specific pages which might not exist but let's assume they can view profiles)
+    // No restrictions defined for admin other than they don't do scores/attendance editing, but they can view the pages.
+  } else if (role === 'teacher') {
+    const teacherRestricted = ['users', 'notifications', 'settings'];
+    if (teacherRestricted.includes(page)) {
+      alert('Access Denied. Teacher role does not have access to this module.');
+      window.location.href = 'dashboard.html';
+    }
+  } else if (role === 'student') {
+    const studentAllowed = ['dashboard', 'profile', 'scores', 'attendance', 'reports', 'settings'];
+    if (!studentAllowed.includes(page)) {
+      alert('Access Denied. Students do not have access to management tools.');
+      window.location.href = 'dashboard.html';
+    }
   }
 }
 
@@ -225,59 +233,46 @@ function renderSidebarNav(user) {
   const sidebar = document.querySelector('.sidebar');
   if (!sidebar) return;
 
-  // Clear or rebuild navigation list
   let nav = sidebar.querySelector('.sidebar-nav');
   if (!nav) return;
 
-  // Role permissions: hide specific links
-  const links = nav.querySelectorAll('.sidebar-link');
-  links.forEach(link => {
-    const href = link.getAttribute('href');
-    let allowed = true;
-
-    if (href === 'users.html' && user.role !== 'admin') {
-      allowed = false;
-    }
-    
-    const adminOrTeacherOnly = ['students.html', 'classes.html', 'subjects.html'];
-    if (adminOrTeacherOnly.includes(href) && user.role === 'student') {
-      allowed = false;
-    }
-
-    if (allowed) {
-      link.classList.remove('hidden');
-    } else {
-      link.classList.add('hidden');
-    }
-
-    // Toggle active page styling
-    const page = document.body.dataset.page;
-    if (href === `${page}.html`) {
-      link.classList.add('active');
-    } else {
-      link.classList.remove('active');
-    }
-  });
-
-  // Ensure Admin sees "User Management" link (check if exists, or append it)
-  let userLink = nav.querySelector('a[href="users.html"]');
-  if (!userLink && user.role === 'admin') {
-    userLink = document.createElement('a');
-    userLink.href = 'users.html';
-    userLink.className = 'sidebar-link';
-    userLink.innerHTML = `<span class="nav-icon">👤</span>User Management`;
-    // Insert before report management or footer
-    const reportsLink = nav.querySelector('a[href="reports.html"]');
-    if (reportsLink) {
-      nav.insertBefore(userLink, reportsLink);
-    } else {
-      nav.appendChild(userLink);
-    }
-    
-    if (document.body.dataset.page === 'users') {
-      userLink.classList.add('active');
-    }
+  const page = document.body.dataset.page;
+  let menuHtml = '';
+  
+  if (user.role === 'admin') {
+    menuHtml = `
+      <a href="dashboard.html" class="sidebar-link ${page === 'dashboard' ? 'active' : ''}"><span class="nav-icon">🏠</span>Dashboard</a>
+      <a href="students.html" class="sidebar-link ${page === 'students' ? 'active' : ''}"><span class="nav-icon">👩‍🎓</span>Students</a>
+      <a href="classes.html" class="sidebar-link ${page === 'classes' ? 'active' : ''}"><span class="nav-icon">🏫</span>Classes</a>
+      <a href="subjects.html" class="sidebar-link ${page === 'subjects' ? 'active' : ''}"><span class="nav-icon">📚</span>Subjects</a>
+      <a href="users.html" class="sidebar-link ${page === 'users' ? 'active' : ''}"><span class="nav-icon">👥</span>Users</a>
+      <a href="reports.html" class="sidebar-link ${page === 'reports' ? 'active' : ''}"><span class="nav-icon">📄</span>Reports</a>
+      <a href="notifications.html" class="sidebar-link ${page === 'notifications' ? 'active' : ''}"><span class="nav-icon">🔔</span>Notifications</a>
+      <a href="settings.html" class="sidebar-link ${page === 'settings' ? 'active' : ''}"><span class="nav-icon">⚙️</span>System</a>
+    `;
+  } else if (user.role === 'teacher') {
+    menuHtml = `
+      <a href="dashboard.html" class="sidebar-link ${page === 'dashboard' ? 'active' : ''}"><span class="nav-icon">🏠</span>Dashboard</a>
+      <a href="students.html" class="sidebar-link ${page === 'students' ? 'active' : ''}"><span class="nav-icon">👩‍🎓</span>Students</a>
+      <a href="classes.html" class="sidebar-link ${page === 'classes' ? 'active' : ''}"><span class="nav-icon">🏫</span>Classes</a>
+      <a href="subjects.html" class="sidebar-link ${page === 'subjects' ? 'active' : ''}"><span class="nav-icon">📚</span>Subjects</a>
+      <a href="scores.html" class="sidebar-link ${page === 'scores' ? 'active' : ''}"><span class="nav-icon">📝</span>Scores</a>
+      <a href="attendance.html" class="sidebar-link ${page === 'attendance' ? 'active' : ''}"><span class="nav-icon">📅</span>Attendance</a>
+      <a href="reports.html" class="sidebar-link ${page === 'reports' ? 'active' : ''}"><span class="nav-icon">📄</span>Reports</a>
+    `;
+  } else if (user.role === 'student') {
+    menuHtml = `
+      <a href="dashboard.html" class="sidebar-link ${page === 'dashboard' ? 'active' : ''}"><span class="nav-icon">🏠</span>Dashboard</a>
+      <a href="profile.html" class="sidebar-link ${page === 'profile' ? 'active' : ''}"><span class="nav-icon">👩‍🎓</span>My Profile</a>
+      <a href="scores.html" class="sidebar-link ${page === 'scores' ? 'active' : ''}"><span class="nav-icon">📝</span>My Scores</a>
+      <a href="attendance.html" class="sidebar-link ${page === 'attendance' ? 'active' : ''}"><span class="nav-icon">📅</span>My Attendance</a>
+      <a href="reports.html?type=transcript" class="sidebar-link ${page === 'reports' ? 'active' : ''}"><span class="nav-icon">📄</span>Transcript</a>
+      <a href="settings.html" class="sidebar-link ${page === 'settings' ? 'active' : ''}"><span class="nav-icon">⚙️</span>Settings</a>
+    `;
   }
+
+  nav.innerHTML = menuHtml;
+
 
   // Setup Logout Button
   const sidebarFooter = sidebar.querySelector('.sidebar-footer');
@@ -565,28 +560,40 @@ function initDashboard() {
 }
 
 function renderDashboardStats(user) {
-  const statStudents = document.getElementById('stat-students');
-  const statClasses = document.getElementById('stat-classes');
-  const statSubjects = document.getElementById('stat-subjects');
-  const statGpa = document.getElementById('stat-gpa');
-
-  if (statStudents) statStudents.textContent = students.length;
-  if (statClasses) statClasses.textContent = classes.length;
-  if (statSubjects) statSubjects.textContent = subjects.length;
+  const grid = document.getElementById('dashboard-stats-grid');
+  if (!grid) return;
   
-  if (statGpa) {
-    if (user.role === 'student') {
-      // Show student's personal GPA
-      const studentData = students.find(s => s.email.toLowerCase() === user.email.toLowerCase());
-      statGpa.textContent = studentData ? studentData.gpa.toFixed(2) : '0.00';
-      const gpaCardTitle = statGpa.previousElementSibling;
-      if (gpaCardTitle) gpaCardTitle.textContent = 'My Academic GPA';
-    } else {
-      // Show school average GPA
-      const average = students.length ? (students.reduce((sum, s) => sum + s.gpa, 0) / students.length).toFixed(2) : '0.00';
-      statGpa.textContent = average;
-    }
+  let html = '';
+  if (user.role === 'admin') {
+    const teachersCount = users.filter(u => u.role === 'teacher').length;
+    html = `
+      <div class="card stats-card"><div><div class="card-title">Total Students</div><div class="stat-val-container"><div class="stat-value">${students.length}</div></div></div></div>
+      <div class="card stats-card accent"><div><div class="card-title">Total Teachers</div><div class="stat-val-container"><div class="stat-value">${teachersCount}</div></div></div></div>
+      <div class="card stats-card success"><div><div class="card-title">Total Classes</div><div class="stat-val-container"><div class="stat-value">${classes.length}</div></div></div></div>
+      <div class="card stats-card warning"><div><div class="card-title">Total Subjects</div><div class="stat-val-container"><div class="stat-value">${subjects.length}</div></div></div></div>
+    `;
+  } else if (user.role === 'teacher') {
+    const assignedClasses = classes.length; // Simplified for UI
+    const todayAttendance = attendanceRecords.filter(r => r.date === new Date().toISOString().split('T')[0]).length;
+    html = `
+      <div class="card stats-card"><div><div class="card-title">Assigned Classes</div><div class="stat-val-container"><div class="stat-value">${assignedClasses}</div></div></div></div>
+      <div class="card stats-card accent"><div><div class="card-title">Today's Attendance</div><div class="stat-val-container"><div class="stat-value">${todayAttendance}</div></div></div></div>
+      <div class="card stats-card success"><div><div class="card-title">Recent Scores</div><div class="stat-val-container"><div class="stat-value">${scores.length}</div></div></div></div>
+      <div class="card stats-card warning"><div><div class="card-title">Total Subjects</div><div class="stat-val-container"><div class="stat-value">${subjects.length}</div></div></div></div>
+    `;
+  } else if (user.role === 'student') {
+    const studentData = students.find(s => s.name.toLowerCase() === user.name.toLowerCase());
+    const gpa = studentData ? studentData.gpa.toFixed(2) : '0.00';
+    const myScores = scores.filter(s => s.student.toLowerCase() === user.name.toLowerCase()).length;
+    html = `
+      <div class="card stats-card"><div><div class="card-title">Current GPA</div><div class="stat-val-container"><div class="stat-value">${gpa}</div></div></div></div>
+      <div class="card stats-card accent"><div><div class="card-title">Attendance %</div><div class="stat-val-container"><div class="stat-value">95%</div></div></div></div>
+      <div class="card stats-card success"><div><div class="card-title">Recent Scores</div><div class="stat-val-container"><div class="stat-value">${myScores}</div></div></div></div>
+      <div class="card stats-card warning"><div><div class="card-title">Enrolled Classes</div><div class="stat-val-container"><div class="stat-value">1</div></div></div></div>
+    `;
   }
+  
+  grid.innerHTML = html;
 }
 
 function renderDashboardNotifications(user) {
@@ -844,17 +851,30 @@ function initStudentsPage() {
   const form = document.getElementById('studentForm');
   const exportBtn = document.getElementById('exportStudentsBtn') || createExportBtn();
 
+  const user = getCurrentUser();
+
   populateClassFilter(filter, 'all');
   populateClassSelect(document.getElementById('studentClass'));
   
-  if (addBtn) addBtn.addEventListener('click', () => openStudentForm('add'));
+  if (addBtn) {
+    if (user && user.role !== 'admin') {
+      addBtn.style.display = 'none';
+    } else {
+      addBtn.addEventListener('click', () => openStudentForm('add'));
+    }
+  }
+  
   if (cancelBtn) cancelBtn.addEventListener('click', closeStudentForm);
   if (search) search.addEventListener('input', () => { currentStudentPage = 1; renderStudentTable(); });
   if (filter) filter.addEventListener('change', () => { currentStudentPage = 1; renderStudentTable(); });
   if (form) form.addEventListener('submit', handleStudentFormSubmit);
   
   if (exportBtn) {
-    exportBtn.addEventListener('click', exportStudentListCSV);
+    if (user && user.role !== 'admin') {
+      exportBtn.style.display = 'none';
+    } else {
+      exportBtn.addEventListener('click', exportStudentListCSV);
+    }
   }
 
   setupTableSorting();
@@ -968,10 +988,19 @@ function renderStudentTable() {
   const tbody = document.getElementById('studentTableBody');
   if (!tbody) return;
 
+  const user = getCurrentUser();
+  if (!user) return;
+
+  const actionHeader = document.getElementById('studentActionHeader');
+  if (actionHeader) {
+    actionHeader.style.display = user.role === 'admin' ? '' : 'none';
+  }
+
   tbody.innerHTML = '';
   
   if (filtered.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; color: var(--text-muted);">No student records match search filters.</td></tr>';
+    const colspan = user.role === 'admin' ? '8' : '7';
+    tbody.innerHTML = `<tr><td colspan="${colspan}" style="text-align: center; color: var(--text-muted);">No student records match search filters.</td></tr>`;
     renderStudentPagination(0);
     return;
   }
@@ -981,6 +1010,19 @@ function renderStudentTable() {
 
   pageItems.forEach((student) => {
     const row = document.createElement('tr');
+    
+    let actionsHtml = '';
+    if (user.role === 'admin') {
+      actionsHtml = `
+        <td>
+          <div class="action-buttons">
+            <button class="btn btn-secondary" onclick="editStudent('${student.id}')">Edit</button>
+            <button class="btn btn-danger" onclick="deleteStudent('${student.id}')">Delete</button>
+          </div>
+        </td>
+      `;
+    }
+
     row.innerHTML = `
       <td><strong>${student.id}</strong></td>
       <td>${student.name}</td>
@@ -989,12 +1031,7 @@ function renderStudentTable() {
       <td><span class="badge badge-primary">${student.class}</span></td>
       <td>${student.email}</td>
       <td><strong style="color: var(--primary);">${student.gpa.toFixed(2)}</strong></td>
-      <td>
-        <div class="action-buttons">
-          <button class="btn btn-secondary" onclick="editStudent('${student.id}')">Edit</button>
-          <button class="btn btn-danger" onclick="deleteStudent('${student.id}')">Delete</button>
-        </div>
-      </td>
+      ${actionsHtml}
     `;
     tbody.appendChild(row);
   });
@@ -1156,7 +1193,14 @@ function initClassesPage() {
   if (search) search.addEventListener('input', renderClassTable);
   
   const addBtn = document.getElementById('addClassBtn');
-  if (addBtn) addBtn.addEventListener('click', () => openClassForm('add'));
+  const user = getCurrentUser();
+  if (addBtn) {
+    if (user && user.role !== 'admin') {
+      addBtn.style.display = 'none';
+    } else {
+      addBtn.addEventListener('click', () => openClassForm('add'));
+    }
+  }
   
   const cancelBtn = document.getElementById('classFormCancel');
   if (cancelBtn) cancelBtn.addEventListener('click', closeClassForm);
@@ -1195,6 +1239,14 @@ function renderClassTable() {
   const body = document.getElementById('classTableBody');
   if (!body) return;
 
+  const user = getCurrentUser();
+  if (!user) return;
+
+  const actionHeader = document.getElementById('classActionHeader');
+  if (actionHeader) {
+    actionHeader.style.display = user.role === 'admin' ? '' : 'none';
+  }
+
   body.innerHTML = '';
   classes.filter((cls) => `${cls.name} ${cls.teacher}`.toLowerCase().includes(searchTerm)).forEach((cls) => {
     // Dynamic Student count in class
@@ -1202,17 +1254,25 @@ function renderClassTable() {
     cls.count = studentCount;
 
     const row = document.createElement('tr');
+    
+    let actionsHtml = '';
+    if (user.role === 'admin') {
+      actionsHtml = `
+        <td>
+          <div class="action-buttons">
+            <button class="btn btn-secondary" onclick="editClass('${cls.id}')">Edit</button>
+            <button class="btn btn-danger" onclick="deleteClass('${cls.id}')">Delete</button>
+          </div>
+        </td>
+      `;
+    }
+
     row.innerHTML = `
       <td><strong>${cls.id}</strong></td>
       <td>${cls.name}</td>
       <td>${cls.teacher}</td>
       <td><span class="badge badge-primary">${studentCount} Students</span></td>
-      <td>
-        <div class="action-buttons">
-          <button class="btn btn-secondary" onclick="editClass('${cls.id}')">Edit</button>
-          <button class="btn btn-danger" onclick="deleteClass('${cls.id}')">Delete</button>
-        </div>
-      </td>
+      ${actionsHtml}
     `;
     body.appendChild(row);
   });
@@ -1332,7 +1392,15 @@ function deleteClass(id) {
 function initSubjectsPage() {
   document.getElementById('subjectSearch').addEventListener('input', renderSubjectTable);
   document.getElementById('subjectClassFilter').addEventListener('change', renderSubjectTable);
-  document.getElementById('addSubjectBtn').addEventListener('click', () => openSubjectForm('add'));
+  const addBtn = document.getElementById('addSubjectBtn');
+  const user = getCurrentUser();
+  if (addBtn) {
+    if (user && user.role !== 'admin') {
+      addBtn.style.display = 'none';
+    } else {
+      addBtn.addEventListener('click', () => openSubjectForm('add'));
+    }
+  }
   document.getElementById('subjectFormCancel').addEventListener('click', closeSubjectForm);
   document.getElementById('subjectForm').addEventListener('submit', handleSubjectFormSubmit);
   populateClassFilter(document.getElementById('subjectClassFilter'), 'all');
@@ -1351,6 +1419,14 @@ function renderSubjectTable() {
   const tbody = document.getElementById('subjectTableBody');
   if (!tbody) return;
 
+  const user = getCurrentUser();
+  if (!user) return;
+
+  const actionHeader = document.getElementById('subjectActionHeader');
+  if (actionHeader) {
+    actionHeader.style.display = user.role === 'admin' ? '' : 'none';
+  }
+
   tbody.innerHTML = '';
   
   const filtered = subjects.filter((subject) => {
@@ -1360,23 +1436,32 @@ function renderSubjectTable() {
   });
 
   if (filtered.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--text-muted);">No subjects found matching the criteria.</td></tr>';
+    const colspan = user.role === 'admin' ? '5' : '4';
+    tbody.innerHTML = `<tr><td colspan="${colspan}" style="text-align: center; color: var(--text-muted);">No subjects found matching the criteria.</td></tr>`;
     return;
   }
 
   filtered.forEach((subject) => {
     const row = document.createElement('tr');
+    
+    let actionsHtml = '';
+    if (user.role === 'admin') {
+      actionsHtml = `
+        <td>
+          <div class="action-buttons">
+            <button class="btn btn-secondary" onclick="editSubject('${subject.code}')">Edit</button>
+            <button class="btn btn-danger" onclick="deleteSubject('${subject.code}')">Delete</button>
+          </div>
+        </td>
+      `;
+    }
+
     row.innerHTML = `
       <td><strong>${subject.code}</strong></td>
       <td>${subject.name}</td>
       <td><span class="badge badge-secondary">${subject.credits} Credits</span></td>
       <td>${subject.classes.map(c => `<span class="badge badge-primary" style="margin-right: 4px;">${c}</span>`).join('')}</td>
-      <td>
-        <div class="action-buttons">
-          <button class="btn btn-secondary" onclick="editSubject('${subject.code}')">Edit</button>
-          <button class="btn btn-danger" onclick="deleteSubject('${subject.code}')">Delete</button>
-        </div>
-      </td>
+      ${actionsHtml}
     `;
     tbody.appendChild(row);
   });
@@ -1466,7 +1551,15 @@ function deleteSubject(code) {
 // 8. SCORE MANAGEMENT
 function initScoresPage() {
   document.getElementById('scoreSearch').addEventListener('input', renderScoreTable);
-  document.getElementById('addScoreBtn').addEventListener('click', () => openScoreForm('add'));
+  
+  const user = getCurrentUser();
+  const addBtn = document.getElementById('addScoreBtn');
+  if (user && user.role !== 'teacher' && addBtn) {
+    addBtn.style.display = 'none';
+  } else if (addBtn) {
+    addBtn.addEventListener('click', () => openScoreForm('add'));
+  }
+
   document.getElementById('scoreFormCancel').addEventListener('click', closeScoreForm);
   document.getElementById('scoreForm').addEventListener('submit', handleScoreFormSubmit);
   document.getElementById('midtermScore').addEventListener('input', updateProjectedGpa);
@@ -1489,35 +1582,56 @@ function renderScoreTable() {
   const tbody = document.getElementById('scoreTableBody');
   if (!tbody) return;
 
+  const user = getCurrentUser();
+  if (!user) return;
+
+  const actionHeader = document.getElementById('scoreActionHeader');
+  if (actionHeader) {
+    actionHeader.style.display = user.role === 'teacher' ? '' : 'none';
+  }
+
   tbody.innerHTML = '';
   
-  const filtered = scores.filter((score) => `${score.student} ${score.subject}`.toLowerCase().includes(searchTerm));
+  let filtered = scores.filter((score) => `${score.student} ${score.subject}`.toLowerCase().includes(searchTerm));
+  
+  if (user.role === 'student') {
+    filtered = filtered.filter(score => score.student.toLowerCase() === user.name.toLowerCase());
+  }
   
   if (filtered.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: var(--text-muted);">No student score records found.</td></tr>';
+    const colspan = user.role === 'teacher' ? '6' : '5';
+    tbody.innerHTML = `<tr><td colspan="${colspan}" style="text-align: center; color: var(--text-muted);">No student score records found.</td></tr>`;
     document.getElementById('scoreGpaValue').textContent = '0.00';
     return;
   }
 
   filtered.forEach((score) => {
     const row = document.createElement('tr');
+    
+    let actionsHtml = '';
+    if (user.role === 'teacher') {
+      actionsHtml = `
+        <td>
+          <div class="action-buttons">
+            <button class="btn btn-secondary" onclick="editScore('${score.id}')">Edit</button>
+            <button class="btn btn-danger" onclick="deleteScore('${score.id}')">Delete</button>
+          </div>
+        </td>
+      `;
+    }
+
     row.innerHTML = `
       <td><strong>${score.student}</strong></td>
       <td>${score.subject}</td>
       <td>${score.midterm}</td>
       <td>${score.final}</td>
       <td><strong style="color: var(--primary);">${score.gpa.toFixed(2)}</strong></td>
-      <td>
-        <div class="action-buttons">
-          <button class="btn btn-secondary" onclick="editScore('${score.id}')">Edit</button>
-          <button class="btn btn-danger" onclick="deleteScore('${score.id}')">Delete</button>
-        </div>
-      </td>
+      ${actionsHtml}
     `;
     tbody.appendChild(row);
   });
   
-  const average = scores.length ? (scores.reduce((sum, item) => sum + item.gpa, 0) / scores.length).toFixed(2) : '0.00';
+  const average = filtered.length ? (filtered.reduce((sum, item) => sum + item.gpa, 0) / filtered.length).toFixed(2) : '0.00';
   document.getElementById('scoreGpaValue').textContent = average;
 }
 
@@ -1628,11 +1742,17 @@ function initAttendancePage() {
   const classFilter = document.getElementById('attendanceClassFilter') || createAttendanceClassFilter();
   const dateInput = document.getElementById('attendanceDate') || createAttendanceDatePicker();
 
+  const user = getCurrentUser();
+
   if (search) search.addEventListener('input', renderAttendanceTable);
   
   if (classFilter) {
-    populateClassFilter(classFilter, classes[0].name);
-    classFilter.addEventListener('change', renderAttendanceTable);
+    if (user && user.role === 'student') {
+      classFilter.parentElement.style.display = 'none';
+    } else {
+      populateClassFilter(classFilter, classes[0].name);
+      classFilter.addEventListener('change', renderAttendanceTable);
+    }
   }
 
   if (dateInput) {
@@ -1641,17 +1761,25 @@ function initAttendancePage() {
 
   const saveBtn = document.getElementById('saveAttendanceBtn');
   if (saveBtn) {
-    saveBtn.addEventListener('click', () => {
-      saveCurrentAttendanceState();
-      alert('Daily attendance records saved successfully in local storage.');
-    });
+    if (user && user.role !== 'teacher') {
+      saveBtn.style.display = 'none';
+    } else {
+      saveBtn.addEventListener('click', () => {
+        saveCurrentAttendanceState();
+        alert('Daily attendance records saved successfully in local storage.');
+      });
+    }
   }
 
   const reportBtn = document.getElementById('attendanceReportBtn');
   if (reportBtn) {
-    reportBtn.addEventListener('click', () => {
-      window.location.href = 'reports.html?type=attendance';
-    });
+    if (user && user.role === 'student') {
+      reportBtn.parentElement.style.display = 'none'; // hide the reporting card entirely for student if needed
+    } else {
+      reportBtn.addEventListener('click', () => {
+        window.location.href = 'reports.html?type=attendance';
+      });
+    }
   }
 
   renderAttendanceTable();
@@ -1696,13 +1824,22 @@ function renderAttendanceTable() {
   const tbody = document.getElementById('attendanceTableBody');
   if (!tbody) return;
 
+  const user = getCurrentUser();
+  if (!user) return;
+
   tbody.innerHTML = '';
 
-  // Get students of selected class
-  const classStudents = students.filter(s => classFilter === 'all' || s.class === classFilter);
+  let classStudents = [];
+  
+  if (user.role === 'student') {
+    const studentInfo = students.find(s => s.name.toLowerCase() === user.name.toLowerCase());
+    if (studentInfo) classStudents = [studentInfo];
+  } else {
+    classStudents = students.filter(s => classFilter === 'all' || s.class === classFilter);
+  }
 
   if (classStudents.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="3" style="text-align: center; color: var(--text-muted);">No student enrolled in this class.</td></tr>';
+    tbody.innerHTML = '<tr><td colspan="3" style="text-align: center; color: var(--text-muted);">No student found for attendance.</td></tr>';
     updateAttendanceSummary(0, 0, 0);
     return;
   }
@@ -1710,21 +1847,22 @@ function renderAttendanceTable() {
   classStudents.forEach(student => {
     if (searchTerm && !student.name.toLowerCase().includes(searchTerm)) return;
 
-    // Check if an attendance record exists in our DB for this date & student
     let record = attendanceRecords.find(r => r.date === dateVal && r.student.toLowerCase() === student.name.toLowerCase());
     
-    // If not, default to "Present"
     if (!record) {
       record = { date: dateVal, student: student.name, class: student.class, status: 'Present' };
-      // Save it memory-only for now, until user saves
     }
 
     const row = document.createElement('tr');
+    
+    // Disable select for non-teachers
+    const disabledAttr = user.role !== 'teacher' ? 'disabled' : '';
+
     row.innerHTML = `
       <td><strong>${student.name}</strong></td>
       <td><span class="badge badge-primary">${student.class}</span></td>
       <td>
-        <select class="attendance-select" data-student="${student.name}" onchange="updateAttendanceStatus('${student.name}', this.value)">
+        <select class="attendance-select" data-student="${student.name}" onchange="updateAttendanceStatus('${student.name}', this.value)" ${disabledAttr}>
           <option value="Present" ${record.status === 'Present' ? 'selected' : ''}>Present</option>
           <option value="Absent" ${record.status === 'Absent' ? 'selected' : ''}>Absent</option>
           <option value="Late" ${record.status === 'Late' ? 'selected' : ''}>Late</option>
@@ -1936,6 +2074,9 @@ function renderNotificationHistory() {
 
 // 11. REPORT MANAGEMENT
 function initReportsPage() {
+  const user = getCurrentUser();
+  if (!user) return;
+
   // Listen for selection change
   document.querySelectorAll('input[name="reportType"]').forEach((input) => {
     input.addEventListener('change', () => renderReportPreview(input.value));
@@ -1950,9 +2091,35 @@ function initReportsPage() {
   if (excelBtn) excelBtn.addEventListener('click', simulateExportExcel);
   if (transcriptBtn) transcriptBtn.addEventListener('click', simulateDownloadTranscript);
 
+  // RBAC for Report types
+  const academicRadio = document.querySelector('input[name="reportType"][value="academic"]');
+  const attendanceRadio = document.querySelector('input[name="reportType"][value="attendance"]');
+  const transcriptRadio = document.querySelector('input[name="reportType"][value="transcript"]');
+
+  if (user.role === 'admin') {
+    if (attendanceRadio) attendanceRadio.parentElement.style.display = 'none';
+    if (transcriptRadio) transcriptRadio.parentElement.style.display = 'none';
+    if (transcriptBtn) transcriptBtn.style.display = 'none';
+  } else if (user.role === 'teacher') {
+    if (academicRadio) academicRadio.parentElement.style.display = 'none';
+    if (transcriptRadio) transcriptRadio.parentElement.style.display = 'none';
+    if (transcriptBtn) transcriptBtn.style.display = 'none';
+  } else if (user.role === 'student') {
+    if (academicRadio) academicRadio.parentElement.style.display = 'none';
+    if (attendanceRadio) attendanceRadio.parentElement.style.display = 'none';
+    if (pdfBtn) pdfBtn.style.display = 'none';
+    if (excelBtn) excelBtn.style.display = 'none';
+  }
+
   // If reports page was loaded with hash or query parameters (e.g. ?type=attendance)
   const urlParams = new URLSearchParams(window.location.search);
-  const typeParam = urlParams.get('type') || 'academic';
+  let typeParam = urlParams.get('type');
+  
+  if (!typeParam) {
+    if (user.role === 'admin') typeParam = 'academic';
+    else if (user.role === 'teacher') typeParam = 'attendance';
+    else if (user.role === 'student') typeParam = 'transcript';
+  }
 
   const radio = document.querySelector(`input[name="reportType"][value="${typeParam}"]`);
   if (radio) {
@@ -2432,9 +2599,31 @@ function initProfilePage() {
   // Pre-fill forms
   const nameInput = document.getElementById('profileName');
   const emailInput = document.getElementById('profileEmail');
-
+  const phoneInput = document.getElementById('profilePhone');
+  const addressInput = document.getElementById('profileAddress');
+  const avatarInput = document.getElementById('profileAvatar');
+  
   if (nameInput) nameInput.value = user.name || '';
   if (emailInput) emailInput.value = user.email || '';
+  if (phoneInput) phoneInput.value = user.phone || '';
+  if (addressInput) addressInput.value = user.address || '';
+  if (avatarInput) avatarInput.value = user.avatar || '';
+
+  if (user.role === 'student') {
+    const academicSection = document.getElementById('studentAcademicSection');
+    if (academicSection) academicSection.style.display = 'block';
+
+    const studentInfo = students.find(s => s.name.toLowerCase() === user.name.toLowerCase());
+    if (studentInfo) {
+      const studentIdInput = document.getElementById('profileStudentId');
+      const classInput = document.getElementById('profileClass');
+      const gpaInput = document.getElementById('profileGpa');
+
+      if (studentIdInput) studentIdInput.value = studentInfo.id || '';
+      if (classInput) classInput.value = studentInfo.class || '';
+      if (gpaInput) gpaInput.value = studentInfo.gpa ? studentInfo.gpa.toFixed(2) : '0.00';
+    }
+  }
 
   // Left card info display
   const avatarCard = document.querySelector('.profile-large-avatar');

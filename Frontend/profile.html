@@ -61,16 +61,41 @@
           <form id="profileDetailsForm" class="profile-form" style="margin-bottom: 32px;">
             <div class="profile-form-section">
               <h3>Basic Information</h3>
-              <div class="form-grid">
+              <div class="form-grid" id="profileFormGrid">
                 <label>Full Name
                   <input type="text" id="profileName" required />
                 </label>
                 <label>Email Address
                   <input type="email" id="profileEmail" required />
                 </label>
+                <label>Phone Number
+                  <input type="tel" id="profilePhone" placeholder="+1 234 567 8900" />
+                </label>
+                <label>Address
+                  <input type="text" id="profileAddress" placeholder="123 Main St" />
+                </label>
+                <label>Avatar URL (Upload Avatar)
+                  <input type="text" id="profileAvatar" placeholder="https://example.com/avatar.png" />
+                </label>
               </div>
             </div>
-            <button type="submit" class="btn btn-primary" style="align-self: flex-start;">Save Information</button>
+            
+            <div class="profile-form-section" id="studentAcademicSection" style="display: none; margin-top: 24px;">
+              <h3>Academic Details (Read Only)</h3>
+              <div class="form-grid">
+                <label>Student ID
+                  <input type="text" id="profileStudentId" readonly style="background: var(--surface-hover); cursor: not-allowed;" />
+                </label>
+                <label>Class
+                  <input type="text" id="profileClass" readonly style="background: var(--surface-hover); cursor: not-allowed;" />
+                </label>
+                <label>GPA
+                  <input type="text" id="profileGpa" readonly style="background: var(--surface-hover); cursor: not-allowed;" />
+                </label>
+              </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="align-self: flex-start; margin-top: 16px;">Save Information</button>
           </form>
 
           <form id="profilePasswordForm" class="profile-form">
