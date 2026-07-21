@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ACADEX - User Management</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body data-page="users">
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <div class="logo-circle">A</div>
+        <div>
+          <h2>ACADEX</h2>
+          <span>Student System</span>
+        </div>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="dashboard.html" class="sidebar-link"><span class="nav-icon">🏠</span>Dashboard</a>
+        <a href="students.html" class="sidebar-link"><span class="nav-icon">👩‍🎓</span>Student Management</a>
+        <a href="classes.html" class="sidebar-link"><span class="nav-icon">🏫</span>Class Management</a>
+        <a href="subjects.html" class="sidebar-link"><span class="nav-icon">📚</span>Subject Management</a>
+        <a href="scores.html" class="sidebar-link"><span class="nav-icon">📝</span>Score Management</a>
+        <a href="attendance.html" class="sidebar-link"><span class="nav-icon">📅</span>Attendance Management</a>
+        <a href="notifications.html" class="sidebar-link"><span class="nav-icon">🔔</span>Notification Management</a>
+        <a href="reports.html" class="sidebar-link"><span class="nav-icon">📄</span>Report Management</a>
+      </nav>
+      <div class="sidebar-footer">
+        <a href="login.html" class="btn btn-secondary btn-full">Logout</a>
+      </div>
+    </aside>
+    <main class="main-content">
+      <header class="topbar">
+        <div>
+          <h1>User Management</h1>
+          <p>Register, update, and manage access levels for teachers, students, and coordinators.</p>
+        </div>
+      </header>
+      
+      <section class="card panel-card">
+        <div class="panel-actions">
+          <div class="search-group">
+            <input id="userSearch" type="text" placeholder="Search users by name, email or role..." />
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>User Identity</th>
+                <th>Email Address</th>
+                <th>Role</th>
+                <th>Status (Active)</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="userTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Edit User Panel Modal -->
+      <section id="userFormPanel" class="card hidden form-panel">
+        <h2 id="userFormTitle">Edit User Details</h2>
+        <form id="userForm">
+          <div class="form-grid">
+            <label>Full Name
+              <input type="text" id="userName" required />
+            </label>
+            <label>Email Address
+              <input type="email" id="userEmail" required />
+            </label>
+            <label>System Role
+              <select id="userRole" required>
+                <option value="student">Student</option>
+                <option value="teacher">Teacher</option>
+                <option value="admin">Administrator</option>
+              </select>
+            </label>
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+            <button type="button" id="userFormCancel" class="btn btn-secondary">Cancel</button>
+          </div>
+        </form>
+      </section>
+    </main>
+  </div>
+  <script src="js/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ACADEX Subject Management</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body data-page="subjects">
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <div class="logo-circle">A</div>
+        <div>
+          <h2>ACADEX</h2>
+          <span>Student System</span>
+        </div>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="dashboard.html" class="sidebar-link"><span class="nav-icon">🏠</span>Dashboard</a>
+        <a href="students.html" class="sidebar-link"><span class="nav-icon">👩‍🎓</span>Student Management</a>
+        <a href="classes.html" class="sidebar-link"><span class="nav-icon">🏫</span>Class Management</a>
+        <a href="subjects.html" class="sidebar-link"><span class="nav-icon">📚</span>Subject Management</a>
+        <a href="scores.html" class="sidebar-link"><span class="nav-icon">📝</span>Score Management</a>
+        <a href="attendance.html" class="sidebar-link"><span class="nav-icon">📅</span>Attendance Management</a>
+        <a href="notifications.html" class="sidebar-link"><span class="nav-icon">🔔</span>Notification Management</a>
+        <a href="reports.html" class="sidebar-link"><span class="nav-icon">📄</span>Report Management</a>
+      </nav>
+      <div class="sidebar-footer">
+        <a href="login.html" class="btn btn-secondary btn-full">Logout</a>
+      </div>
+    </aside>
+    <main class="main-content">
+      <header class="topbar">
+        <div>
+          <h1>Subject Management</h1>
+          <p>Manage curriculum subjects, credits, and assigned class groups.</p>
+        </div>
+        <button id="addSubjectBtn" class="btn btn-primary">Add Subject</button>
+      </header>
+      
+      <section class="card panel-card">
+        <div class="panel-actions">
+          <div class="search-group">
+            <input id="subjectSearch" type="text" placeholder="Search subjects by code or name..." />
+          </div>
+          <div class="filter-group">
+            <label for="subjectClassFilter">Assigned Class</label>
+            <select id="subjectClassFilter">
+              <option value="all">All Classes</option>
+            </select>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Subject Code</th>
+                <th>Subject Name</th>
+                <th>Academic Credits</th>
+                <th>Associated Classes</th>
+                <th id="subjectActionHeader">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="subjectTableBody"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="subjectFormPanel" class="card hidden form-panel">
+        <h2 id="subjectFormTitle">Add New Subject</h2>
+        <form id="subjectForm">
+          <div class="form-grid">
+            <label>Subject Code
+              <input type="text" id="subjectCode" required placeholder="e.g. MAT101" />
+            </label>
+            <label>Subject Name
+              <input type="text" id="subjectName" required placeholder="e.g. Calculus I" />
+            </label>
+            <label>Credits Value
+              <input type="number" min="1" max="6" id="subjectCredits" required placeholder="4" />
+            </label>
+            <label>Assign to Classes (Hold Ctrl to select multiple)
+              <select id="subjectClasses" multiple style="height: 120px;"></select>
+            </label>
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Save Subject</button>
+            <button type="button" id="subjectFormCancel" class="btn btn-secondary">Cancel</button>
+          </div>
+        </form>
+      </section>
+    </main>
+  </div>
+  <script src="js/script.js"></script>
+</body>
+</html>

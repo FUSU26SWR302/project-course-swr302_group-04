@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ACADEX Dashboard</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body data-page="dashboard">
+  <div class="app-shell">
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <div class="logo-circle">A</div>
+        <div>
+          <h2>ACADEX</h2>
+          <span>Student System</span>
+        </div>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="dashboard.html" class="sidebar-link"><span class="nav-icon">🏠</span>Dashboard</a>
+        <a href="students.html" class="sidebar-link"><span class="nav-icon">👩‍🎓</span>Student Management</a>
+        <a href="classes.html" class="sidebar-link"><span class="nav-icon">🏫</span>Class Management</a>
+        <a href="subjects.html" class="sidebar-link"><span class="nav-icon">📚</span>Subject Management</a>
+        <a href="scores.html" class="sidebar-link"><span class="nav-icon">📝</span>Score Management</a>
+        <a href="attendance.html" class="sidebar-link"><span class="nav-icon">📅</span>Attendance Management</a>
+        <a href="notifications.html" class="sidebar-link"><span class="nav-icon">🔔</span>Notification Management</a>
+        <a href="reports.html" class="sidebar-link"><span class="nav-icon">📄</span>Report Management</a>
+      </nav>
+      <div class="sidebar-footer">
+        <a href="login.html" class="btn btn-secondary btn-full">Logout</a>
+      </div>
+    </aside>
+    <main class="main-content">
+      <header class="topbar">
+        <div>
+          <h1>Dashboard</h1>
+          <p>Welcome back, Admin. Review the latest academic system metrics.</p>
+        </div>
+        <div class="profile-chip">
+          <!-- Profile chip dynamically created by JS -->
+        </div>
+      </header>
+
+      <!-- Statistics Grid -->
+      <section class="grid-four" id="dashboard-stats-grid">
+      </section>
+
+      <!-- Charts & Visuals -->
+      <section class="grid-two">
+        <div class="card card-panel">
+          <div class="panel-header">
+            <h2>Academic Metrics Summary</h2>
+            <span class="badge badge-primary">Performance Charts</span>
+          </div>
+          <div class="chart-container">
+            <canvas id="dashboardChart"></canvas>
+          </div>
+        </div>
+        
+        <!-- Role Specific Action/Score Widget Container -->
+        <div id="role-widgets-container">
+          <!-- Dynamically populated by JS based on current role -->
+        </div>
+      </section>
+
+      <!-- Recent Announcements & Activities timeline -->
+      <section class="grid-two gap-large">
+        <div class="card card-panel">
+          <div class="panel-header">
+            <h2>Active Announcements</h2>
+            <span class="badge badge-primary">Notice Board</span>
+          </div>
+          <ul class="notification-list" id="dashboard-notifications">
+            <!-- notification cards inserted here dynamically -->
+          </ul>
+        </div>
+        
+        <div class="card card-panel">
+          <div class="panel-header">
+            <h2>System Activity Log</h2>
+            <span class="badge badge-secondary">Recent Actions</span>
+          </div>
+          <div id="recent-activities-container">
+            <!-- Activities timeline inserted here -->
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="js/script.js"></script>
+</body>
+</html>
